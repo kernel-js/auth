@@ -1,0 +1,53 @@
+{
+  "name": "@kernel-js/auth",
+  "version": "1.0.0",
+  "description": "...",
+  "main": "./dist/index.js",
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "npm run type-check -- --watch",
+    "build": "npm run build:types && npm run build:js",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kernel-js/auth.git"
+  },
+  "keywords": [
+    "kernel",
+    "framework",
+    "auth",
+    "oauth",
+    "session",
+    "passport",
+    "authentication",
+    "mapWithKeys",
+    "laravel",
+    "lodash"
+  ],
+  "author": "Bruno Santos <bruno.dos1997@gmail.com>",
+  "contributors": [
+    "Carlos Henrique Escouto <carloshenriqueescouto@gmail.com>",
+    "Gus <gus@brid-it.com>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kernel-js/auth/issues"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.0",
+    "@babel/core": "^7.2.0",
+    "@babel/plugin-proposal-class-properties": "^7.2.1",
+    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "@kernel-js/crypt": "^1.0.0",
+    "@kernel-js/exceptions": "^1.0.4",
+    "@kernel-js/storage": "^1.0.0",
+    "@kernel-js/support": "^2.2.0"
+  }
+}

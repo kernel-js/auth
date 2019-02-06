@@ -1,0 +1,25 @@
+{
+  "name": "@kernel/crypt",
+  "description": "Service Container and Service Provider for Kernel Framework",
+  "main": "dist/index.js",
+  "author": "Gus <gus@brid-it.com>",
+  "license": "MIT",
+  "keywords": [
+    "kernel",
+    "framework",
+    "laravel",
+    "encrypter",
+    "encrypt",
+    "decrypt",
+    "crypt",
+    "crypto"
+  ],
+  "homepage": "https://github.com/kernel-js/crypt",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
