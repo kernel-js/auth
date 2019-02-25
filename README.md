@@ -3,11 +3,6 @@
 <!-- [![Coverage Status](https://coveralls.io/repos/github/kernel-js/auth/badge.svg?branch=master)](https://coveralls.io/github/kernel-js/auth?branch=master) -->
 <br />
 
-> Util functions and classes
-
-* Offers support to work with JSON and XML
-* Converts from/to Json Api schema (WIP)
-
 <!-- # Why
 
 First of all I created this to support development of [Kernel Framework](https://www.npmjs.com/package/@kernel-js/framework).<br />
