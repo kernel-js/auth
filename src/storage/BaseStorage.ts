@@ -1,100 +1,70 @@
-import {
-  StorageMethods
-} from './enums/StorageMethods';
+// Kernel
+import { get } from '@kernel-js/support';
+import { Cookie, LocalStorage, SessionStorage } from '@kernel-js/storage';
 
-import {
-  Cookie,
-  LocalStorage,
-  SessionStorage
-} from '@kernel-js/storage';
+// Enums
+import StorageMethods from '../enums/StorageMethods';
 
-import {
-  isEmpty
-} from '@kernel-js/support';
+// Interfaces
+import StorageInterface from '../interfaces/StorageInterface';
+export default class BaseStorage implements StorageInterface{
 
-import Crypt from '../crypt/Crypt';
+  private _storage: any;
 
-import StorageInterface from './interfaces/StorageInterface';
-
-export default class BaseStorage implements StorageInterface {
-
-  private crypt: Crypt;
-  private storage: any;
-
-  constructor(private storageMethod: StorageMethods = StorageMethods.LocalStorage, private cryptPassword: string) {
-
-    this.crypt = new Crypt(cryptPassword);
-
-    this._storageFactory(storageMethod);
+  constructor(config: object) {
+    this._storage = this._storageFactory(
+      get(config, 'method', StorageMethods.LocalStorage)
+    );
   }
 
   /**
-   * 
-   * @param storageMethod 
+   * @param  {StorageMethods} method
+   * @returns any
    */
-  private _storageFactory(storageMethod: StorageMethods) {
-    switch (storageMethod) {
+  private _storageFactory(method: StorageMethods): any {
+    switch(method) {
       case StorageMethods.LocalStorage:
+      return new LocalStorage();
 
-        this.storage = new LocalStorage();
-        break;
       case StorageMethods.CookieStorage:
+      return new Cookie();
 
-        this.storage = new Cookie();
-        break;
       case StorageMethods.SessionStorage:
-
-        this.storage = new SessionStorage();
-        break;
+      return new SessionStorage();
     }
   }
 
   /**
-   * 
+   * @returns object
    */
-  public getSession(): object {
-
+  public get(): object {
     try {
-
-      const session = this.storage.get('auth');
-
-      if (isEmpty(session)) {
-        return {};
-      }
-
-      return this.crypt.decrypt(session);
-    } catch (exception) {
-
-      throw exception;
-    }
-  };
-
-  /**
-   * 
-   * @param data 
-   */
-  public storeSession(data): void {
-
-    try {
-
-      this.storage.set('auth', this.crypt.encrypt(data));
-    } catch (exception) {
-
-      throw exception;
+      return this._storage.get('auth')
+    } catch(e) {
+      throw new Error(e);
     }
   }
 
   /**
-   * 
+   * @param  {object} data
+   * @returns Promise
    */
-  public revokeSession(): void {
-
+  public async store(data: object = {}): Promise<any> {
     try {
-      
-      this.storage.delete('auth');
-    } catch (exception) {
-
-      throw exception;
+      this._storage.set('auth', data)
+    } catch(e) {
+      throw new Error(e);
+    }
+  }
+  
+  /**
+   * @returns Promise
+   */
+  public async revoke(): Promise<any> {
+    try {
+      this._storage.delete('auth');
+    } catch(e) {
+      throw new Error(e);
     }
   }
 }
