@@ -9,12 +9,7 @@ export default class OAuthAuthentication extends BaseAuthentication {
      * @param  {object} data
      * @returns void
      */
-    private _setAuthorizationHeader;
-    /**
-     * @param  {object} data
-     * @returns void
-     */
-    private _revokeAuthorizationHeader;
+    authorizationHeaders(): object;
     /**
      * Gets user access tokens.
      * @param  {object} params
