@@ -1,5 +1,5 @@
 # @kernel-js/auth<br />
-[![Build Status](https://travis-ci.org/kernel-js/auth.svg?branch=master)](https://travis-ci.org/kernel-js/serializer)
+[![Build Status](https://travis-ci.org/kernel-js/auth.svg?branch=master)](https://travis-ci.org/kernel-js/auth)
 <!-- [![Coverage Status](https://coveralls.io/repos/github/kernel-js/serializer/badge.svg?branch=master)](https://coveralls.io/github/kernel-js/serializer?branch=master) -->
 <br />
 
