@@ -1,5 +1,5 @@
 // Enums
-// import StorageMethods from './storage/enums/StorageMethods';
+import StorageMethods from './enums/StorageMethods';
 
 // Classes
 import OAuthAuthentication from './authorization/OAuthAuthentication';
@@ -8,7 +8,7 @@ import OAuthAuthentication from './authorization/OAuthAuthentication';
 import AuthenticationInterface from './interfaces/AuthenticationInterface';
 
 export {
-  // StorageMethods,
+  StorageMethods,
   OAuthAuthentication,
   AuthenticationInterface,
 }
