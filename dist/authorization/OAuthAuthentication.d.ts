@@ -1,33 +1,30 @@
-import { StorageMethods } from '../storage/enums/StorageMethods';
-import AuthenticationInterface from './interfaces/AuthenticationInterface';
-export default class OAuthAuthentication implements AuthenticationInterface {
-    private storageMethod;
-    private cryptPassword;
-    private _params;
-    private _request;
-    private _storage;
-    constructor(params: object, request: any, storageMethod: StorageMethods, cryptPassword: string);
+import BaseAuthentication from './BaseAuthentication';
+export default class OAuthAuthentication extends BaseAuthentication {
+    private _client;
     /**
-     *
-     * @param data
+     * @param  {object} config
      */
-    private _authorizationHeader;
+    constructor(config: object);
     /**
-     *
+     * @param  {object} data
+     * @returns void
      */
-    isGuest(): boolean;
+    private _setAuthorizationHeader;
     /**
-     *
+     * @param  {object} data
+     * @returns void
      */
-    isAuthenticated(): boolean;
+    private _revokeAuthorizationHeader;
     /**
-     *
-     * @param params
-     * @param url
+     * Gets user access tokens.
+     * @param  {object} params
+     * @param  {string} url
+     * @returns Promise
      */
-    login(params?: object, url?: string): Promise<Object>;
+    login(params?: object, url?: string): Promise<any>;
     /**
-     *
+     * Clears all user data by logging out.
+     * @returns Promise
      */
-    logout(): Promise<Object>;
+    logout(): Promise<any>;
 }

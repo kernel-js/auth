@@ -1,0 +1,27 @@
+{
+  "name": "@kernel/auth",
+  "description": "Support OAuth authentication by Kernel Framework",
+  "main": "dist/index.js",
+  "author": "Bruno <bruno.dos1997@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "kernel",
+    "framework",
+    "auth",
+    "oauth",
+    "session",
+    "passport",
+    "authentication",
+    "mapWithKeys",
+    "laravel",
+    "lodash"
+  ],
+  "homepage": "https://github.com/kernel-js/oauth",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

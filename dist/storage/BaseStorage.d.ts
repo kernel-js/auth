@@ -1,27 +1,23 @@
-import { StorageMethods } from './enums/StorageMethods';
-import StorageInterface from './interfaces/StorageInterface';
+import StorageInterface from '../interfaces/StorageInterface';
 export default class BaseStorage implements StorageInterface {
-    private storageMethod;
-    private cryptPassword;
-    private crypt;
-    private storage;
-    constructor(storageMethod: StorageMethods, cryptPassword: string);
+    private _storage;
+    constructor(config: object);
     /**
-     *
-     * @param storageMethod
+     * @param  {StorageMethods} method
+     * @returns any
      */
     private _storageFactory;
     /**
-     *
+     * @returns object
      */
-    getSession(): object;
+    get(): object;
     /**
-     *
-     * @param data
+     * @param  {object} data
+     * @returns Promise
      */
-    storeSession(data: any): void;
+    store(data?: object): Promise<any>;
     /**
-     *
+     * @returns Promise
      */
-    revokeSession(): void;
+    revoke(): Promise<any>;
 }

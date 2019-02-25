@@ -1,12 +1,14 @@
-// Storage
-import BaseStorage from './storage/BaseStorage';
-import { StorageMethods } from './storage/enums/StorageMethods';
+// Enums
+// import StorageMethods from './storage/enums/StorageMethods';
 
-// Authentications
+// Classes
 import OAuthAuthentication from './authorization/OAuthAuthentication';
 
+// Interfaces
+import AuthenticationInterface from './interfaces/AuthenticationInterface';
+
 export {
-  BaseStorage,
-  StorageMethods,
+  // StorageMethods,
   OAuthAuthentication,
+  AuthenticationInterface,
 }

@@ -1,117 +1,80 @@
-import {
-  StorageMethods
-} from '../storage/enums/StorageMethods';
+// Kernel
+import { get } from '@kernel-js/support';
 
-import {
-  get,
-  isEmpty
-} from '@kernel-js/support';
+// Decorators
+import ValidateOAuthClass from '../decorators/ValidateOAuthClass';
+import ValidateUserParams from '../decorators/ValidateUserParams';
 
-import {
-  ArgumentNullError
-} from '@kernel-js/exceptions';
+// Classes
+import BaseAuthentication from './BaseAuthentication';
 
-import BaseStorage from '../storage/BaseStorage';
-import AuthenticationInterface from './interfaces/AuthenticationInterface';
+@ValidateOAuthClass()
+export default class OAuthAuthentication extends BaseAuthentication {
 
-export default class OAuthAuthentication implements AuthenticationInterface {
+  private _client: object;
 
-  private _params: object;
-  private _request: any;
-  private _storage: BaseStorage;
+  /**
+   * @param  {object} config
+   */
+  constructor(config: object) {
+    super(config);
 
-  constructor(params: object, request: any, private storageMethod: StorageMethods, private cryptPassword: string) {
-    this._params = params;
-    this._request = request;
-    this._storage = new BaseStorage(storageMethod, cryptPassword);
+    this._client = get(config, 'client', {});
   }
 
   /**
-   * 
-   * @param data 
+   * @param  {object} data
+   * @returns void
    */
-  private _authorizationHeader(data: object = {}): string {
+  public authorizationHeaders(): object {
+    
+    const session =this._storage.get();
+    const tokenType = get(session, 'token_type', 'Bearer');
+    const accessToken = get(session, 'access_token', null);
 
-    const tokenType = get(data, 'token_type', 'Bearer');
-    const accessToken = get(data, 'access_token', null);
-
-    return `${tokenType} ${accessToken}`;
+    return {
+      Authorization: `${tokenType} ${accessToken}`,
+    };
   }
 
   /**
-   * 
+   * Gets user access tokens.
+   * @param  {object} params
+   * @param  {string} url
+   * @returns Promise
    */
-  public isGuest(): boolean {
+  @ValidateUserParams()
+  public async login(params: object = {}, url: string = '/oauth/token'): Promise < any > {
 
-    return isEmpty(
-      get(this._storage.getSession(), 'access_token', null)
-    );
-  }
-
-  /**
-   * 
-   */
-  public isAuthenticated(): boolean {
-
-    return !this.isGuest();
-  }
-
-  /**
-   * 
-   * @param params 
-   * @param url 
-   */
-  public login(params: object = {}, url: string = '/oauth/token'): Promise < Object > {
-
-    let data: object = {
-      'grant_type': 'password'
+    const client: object = {
+      'scope': get(this._client, 'scope', ''),
+      'client_id': get(this._client, 'id', ''),
+      'client_secret': get(this._client, 'secret', '')
     };
 
-    if (isEmpty(get(params, 'username', null))) {
-      throw new ArgumentNullError('username');
-    }
+    const data: object = { grant_type: 'password', ...client, ...params };
 
-    if (isEmpty(get(params, 'password', null))) {
-      throw new ArgumentNullError('password');
-    }
+    return this._request.post(url, data).then(response => {
+      this._storage.store(response.data).then(() => {
 
-    Object.assign(data, this._params);
-    Object.assign(data, params);
-
-    return new Promise((resolve, reject) => {
-
-      this._request.post(url, data)
-        .then(response => {
-          this._storage.storeSession(response.data);
-          this._request.defaults.headers.common['Authorization'] = this._authorizationHeader(response.data);
-
-          resolve(response);
-        })
-        .catch(error => {
-
-          reject(error);
-        })
-    })
-
+        this._request.defaults.headers.common = { ...this.authorizationHeaders };
+      });
+    });
   }
 
   /**
-   * 
+   * Clears all user data by logging out.
+   * @returns Promise
    */
-  public logout(): Promise < Object > {
+  public async logout(): Promise < any > {
 
-    return new Promise((resolve, reject) => {
-
-      try {
-        this._storage.revokeSession();
+    try {
+      this._storage.revoke().then(() => {
+        
         delete this._request.defaults.headers.common['Authorization'];
-
-        resolve();
-      } catch (error) {
-
-        reject(error);
-      }
-
-    });
+      });
+    } catch(e) {
+      throw new Error(e);
+    }
   }
 }
