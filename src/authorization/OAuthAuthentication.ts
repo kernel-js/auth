@@ -57,7 +57,10 @@ export default class OAuthAuthentication extends BaseAuthentication {
     return this._request.post(url, data).then(response => {
       this._storage.store(response.data).then(() => {
 
-        this._request.defaults.headers.common = { ...this.authorizationHeaders() };
+        Object.assign(
+          this._request.defaults.headers.common,
+          this.authorizationHeaders()
+        );
       });
     });
   }

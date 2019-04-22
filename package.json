@@ -1,6 +1,6 @@
 {
   "name": "@kernel-js/auth",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "...",
   "main": "./dist/index.js",
   "ts": "./dist/index.d.ts",
